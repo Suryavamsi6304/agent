@@ -1,0 +1,20 @@
+# Secrets
+.env
+
+# ChromaDB persistent storage
+chroma_db/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# OS
+.DS_Store
+Thumbs.db
