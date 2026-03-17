@@ -4,11 +4,18 @@ Handles streaming responses with RAG context.
 """
 
 import os
+import sys
 from typing import Iterator, List, Dict, Optional
 from groq import Groq
 from dotenv import load_dotenv
 
 load_dotenv()
+
+# Apply SSL/proxy configuration for corporate environments (Zscaler, etc.)
+# Must be done before any network call is made.
+sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
+from ssl_config import configure_ssl, get_httpx_client
+configure_ssl()
 
 MODEL = "llama-3.3-70b-versatile"
 
@@ -29,7 +36,9 @@ def get_client() -> Groq:
     api_key = os.environ.get("GROQ_API_KEY")
     if not api_key:
         raise ValueError("GROQ_API_KEY not set. Add it to your .env file.")
-    return Groq(api_key=api_key)
+    # Pass a custom httpx client so SSL/proxy settings are applied
+    # (Zscaler corporate proxy intercepts TLS — this ensures the right CA is used)
+    return Groq(api_key=api_key, http_client=get_httpx_client())
 
 
 def stream_response(

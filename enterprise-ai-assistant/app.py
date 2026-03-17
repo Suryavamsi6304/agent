@@ -10,6 +10,11 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+# Apply SSL/proxy configuration for corporate environments (Zscaler).
+# Must run before any network I/O (model downloads, API calls, etc.).
+from ssl_config import configure_ssl
+configure_ssl()
+
 # ── Page config ──────────────────────────────────────────────────────────────
 st.set_page_config(
     page_title="Enterprise AI Knowledge Assistant",

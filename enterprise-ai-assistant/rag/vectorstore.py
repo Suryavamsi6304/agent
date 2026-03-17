@@ -4,8 +4,15 @@ Manages document embeddings for RAG retrieval.
 """
 
 import os
+import sys
 import hashlib
 from typing import List, Dict, Optional
+
+# Apply SSL/proxy config before any network call (model download, ChromaDB telemetry, etc.)
+sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
+from ssl_config import configure_ssl
+configure_ssl()
+
 import chromadb
 from chromadb.config import Settings
 from sentence_transformers import SentenceTransformer
